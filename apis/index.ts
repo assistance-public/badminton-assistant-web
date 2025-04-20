@@ -1,10 +1,10 @@
-import { axiosPayOS } from 'utils/axios';
+import { axiosBadmintonAssistant } from 'utils/axios';
 
-export const getInfoApp = (payload: string) => {
-  return axiosPayOS()('/api/payos/apps', {
+export const getInfoMath = (token: string) => {
+  return axiosBadmintonAssistant()('/api/match', {
     method: 'get',
     headers: {
-      'x-sso-payload': payload,
+      Authorization: `Bearer ${token}`,
     },
   });
 };

@@ -18,4 +18,4 @@ axiosInstance.interceptors.response.use(
     throw error;
   },
 );
-export const axiosPayOS = () => axiosInstance;
+export const axiosBadmintonAssistant = () => axiosInstance;
