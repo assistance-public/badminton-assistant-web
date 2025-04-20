@@ -8,3 +8,13 @@ export const getInfoMath = (token: string) => {
     },
   });
 };
+
+
+export const getInfoUser = (token: string) => {
+  return axiosBadmintonAssistant()('/api/user', {
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
