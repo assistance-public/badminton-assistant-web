@@ -2,18 +2,20 @@
 import React from 'react';
 import useSWR from 'swr';
 import { Card, List, Typography, Space, Tag, Spin, Alert } from 'antd';
-import { CalendarOutlined, EnvironmentOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { CalendarOutlined, EnvironmentOutlined, ClockCircleOutlined, TeamOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
 import 'dayjs/locale/vi';
 import { axiosBadmintonAssistant } from 'utils/axios';
+import { useRouter } from 'next/router';
 
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 dayjs.locale('vi');
 
 const MatchList = () => {
+  const router = useRouter();
   const {
     data: matches,
     error,
@@ -24,7 +26,7 @@ const MatchList = () => {
   if (error) return <Alert type='error' message='Lỗi tải dữ liệu trận đấu' />;
 
   return (
-    <div className='p-6'>
+    <div style={{ padding: '30px' }}>
       <Typography.Title level={2}>Danh sách trận đấu</Typography.Title>
 
       <List
@@ -33,7 +35,11 @@ const MatchList = () => {
         renderItem={(match: Record<string, any>) => (
           <List.Item key={match.id}>
             <Card
-              title={match.title}
+              hoverable
+              onClick={() => {
+                router.push(`${router.pathname}/${match.id}`);
+              }}
+              title={`Người trả tiền: ${match.tbl_user.name}(${match.tbl_user.email})`}
               extra={<Tag color='blue'>{dayjs(match.start_time).format('dddd, DD/MM/YYYY')}</Tag>}
             >
               <Space direction='vertical' size='middle'>
@@ -45,6 +51,10 @@ const MatchList = () => {
                   <strong>
                     {dayjs(match.start_date).format('HH:mm')} - {dayjs(match.end_date).format('HH:mm')}
                   </strong>
+                </div>
+                <div>
+                  <TeamOutlined /> Tổng số người tham gia:
+                  <strong>N/A</strong>
                 </div>
               </Space>
             </Card>

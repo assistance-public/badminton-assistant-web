@@ -4,6 +4,9 @@ const nextConfig = {
     locales: ['vi', 'en'],
     localeDetection: false,
   },
+  images: {
+    domains: ['res.cloudinary.com'],
+  },
   reactStrictMode: true,
   async rewrites() {
     return {
