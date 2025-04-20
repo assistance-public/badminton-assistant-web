@@ -1,5 +1,5 @@
 import { Button, Card, Descriptions, Form, notification, Select, Typography } from 'antd';
-import { getInfoMath, getInfoUser } from 'apis';
+import { attendMatch, getInfoMath, getInfoUser } from 'apis';
 import LoadingPage from 'components/LoadingPage';
 import NotFoundPage from 'components/NotFoundPage';
 import dayjs from 'dayjs';
@@ -15,11 +15,29 @@ const InviteMatch = () => {
   const [match, setMatch] = useState<Record<string, any>>({});
   const [user, setUser] = useState<Record<string, any>>({});
   const [countdown, setCountdown] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { token } = router.query;
+  
   const handleSubmit = async () => {
+    if (!token) return;
     form.validateFields().then((values) => {
       console.log(values);
+      setLoading(true);
+      attendMatch(token as string, values)
+        .then((res) => {
+          res;
+          if (values.status === ENUM_STATUS_ATTENDANCE.ACCEPTED) {
+            return router.push('match-register-success');
+          }
+          return router.push('match-decline');
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     });
   };
 
@@ -113,7 +131,7 @@ const InviteMatch = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type='primary' htmlType='submit' loading={false} block>
+            <Button type='primary' htmlType='submit' loading={loading} block>
               Xác nhận
             </Button>
           </Form.Item>
